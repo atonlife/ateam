@@ -13,8 +13,17 @@ class JiraAPI:
 
         self.connect = Connect(cfg)
 
-    def get_issues(self, jql: str) -> list:
+
+    def get_complete_issues(self, author: str, period: dir) -> list:
+        return []
+#TODO return list issues
+
+
+    def _get_issues(self, jql: str) -> list:
         return self.connect.search_issues(jql)
 
-    def get_worklogs(self, issue_id: str) -> list:
-        return self.connect.get_issue_worklogs(issue_id)
+
+    def get_issue_worklog(self, issue_id: str, author: str, period: dir) -> int:
+        #worklogs = self.connect.get_issue_worklogs(issue_id)
+        return []
+#TODO return sum of issue worklogs by author in seconds

@@ -48,11 +48,11 @@ if __name__ == '__main__':
     basicConfig(
         filename='{}.log'.format(__name__),
         level=DEBUG,
-        filemode='a',
+        filemode='w',
         format='%(asctime)s\t[%(levelname)s]\t%(message)s',
     )
 
-    debug('>')
+    debug('<')
     try:
         ateam = ATeam()
         ateam.run()
@@ -62,4 +62,4 @@ if __name__ == '__main__':
         info('Successful')
         print('OK')
     finally:
-        debug('<')
+        debug('>')
