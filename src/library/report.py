@@ -7,29 +7,30 @@ from adapter.jira.api import JiraAPI
 
 class Report:
 
-    def __init__(self, jira: JiraAPI) -> None:
+    def __init__(self, jira: JiraAPI, general: dict) -> None:
         self.jira = jira
+        self.jira.set_general(general)
 
 
     def get_metrics(self, team: dict, period: dict) -> dict:
-        debug('Calculate metrics for "{0}" team'.format(team.get('alias')))
-
-        metrics = dir(
+        metrics = dict(
             summary_time_count = 0,
             summary_estimate_count = 0,
         )
 
-        for member in team.get('members', []):
-            issues = self.jira.get_complete_issues(member, period)
+        info('Calculate metrics for "{}" team'.format(team.get('alias')))
 
-#TODO check issue.fields.timeoriginalestimate
-            metrics['summary_estimate_count'] += issue.fields.timeoriginalestimate
+        members = team.get('members', [])
+        issues = self.jira.get_complete_issues(members, period)
 
-            for issue in issues:
-#TODO check issue.key
-                worklog = self.jira.get_issue_worklog(issue.key, member, period)
+        for issue in issues:
+            fields = issue.get('fields')
+            assert fields.get('timeoriginalestimate')
+            metrics['summary_estimate_count'] += fields.get('timeoriginalestimate')
 
-                metrics['summary_time_count'] += worklog
+            #!assert issue.key
+            #!worklog = self.jira.get_issue_worklog(issue.key, members, period)
+            #!metrics['summary_time_count'] += worklog
 
         debug('Calculated team metrics')
         return metrics

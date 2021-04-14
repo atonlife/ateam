@@ -81,7 +81,8 @@ class Connect:
 
     def search_issues(self, jql: str) -> list:
         data = dict(
-            jql=jql
+            jql=jql,
+            fields=['timeoriginalestimate'],
         )
 
         try:

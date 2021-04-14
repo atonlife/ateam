@@ -38,7 +38,6 @@ class Metric:
 
 
     def _calculate(self, args: Namespace) -> None:
-        info('Calculate metrics')
         assert self.jira
         assert self.metadata
 
@@ -46,12 +45,14 @@ class Metric:
             start = args.start,
             end = args.end,
         )
+        report = Report(self.jira, self.metadata.get_general())
 
-        report = Report(self.jira)
+        info('Calculate team metrics for a period "{start}" - "{end}"'.format(**period))
 
         for team in self.metadata.get_teams():
-            print('Team "{0}" metrics:'.format(team.get('alias')))
+            print('Team "{}" metrics:'.format(team.get('alias')))
 
             metrics = report.get_metrics(team, period)
-            for metric, value in metrics:
-                print('{metric}: {value}'.format(metric, value))
+            for metric in metrics:
+                #TODO: convert seconds to hours
+                print('- {}: {}'.format(metric, metrics.get(metric)))
