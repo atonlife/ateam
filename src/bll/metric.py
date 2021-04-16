@@ -50,9 +50,9 @@ class Metric:
         info('Calculate team metrics for a period "{start}" - "{end}"'.format(**period))
 
         for team in self.metadata.get_teams():
-            print('Team "{}" metrics:'.format(team.get('alias')))
+            print('Team "{}" metrics:'.format(team.get('name')))
 
             metrics = report.get_metrics(team, period)
             for metric in metrics:
-                #TODO: convert seconds to hours
-                print('- {}: {}'.format(metric, metrics.get(metric)))
+                #TODO: convert seconds to hours from time
+                print('- {}: {:0.3f}'.format(metric, metrics.get(metric) / 3600.0))

@@ -22,7 +22,7 @@ class JiraAPI:
 
         info('Jira search complete issues for "{}"'.format(authors))
 
-        #TODO include end date in filter
+        #TODO include end date in filter (add day, conv_jira())
         jql = '''
             filter = "{filter}"
                 AND
@@ -43,7 +43,18 @@ class JiraAPI:
         return ', '.join(members)
 
 
-    def get_issue_worklog(self, issue_id: str, author: str, period: dir) -> int:
-        #worklogs = self.connect.get_issue_worklogs(issue_id)
-        #TODO return sum of issue worklogs by author in seconds
-        return []
+    def get_issue_worklog(self, members: list, period: dict, issue: dict) -> int:
+        total_worklog = 0
+
+        for worklog in self.connect.get_issue_worklogs(issue.get('id')):
+            if worklog.get('author').get('name') not in members:
+                continue
+
+            # Format exemple: 2018-05-16T10:52:00.000+0300
+            started = worklog.get('started')
+            if started < period.get('start') or period.get('end') < started:
+                continue
+
+            total_worklog += worklog.get('timeSpentSeconds')
+
+        return total_worklog

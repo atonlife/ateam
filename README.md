@@ -25,18 +25,18 @@ password = <user password>
 ### metadata.json
 ```json
 {
-  "members": [
-    {
-      "alias" : "<name for show>",
-      "user": "<username for JQL>",
-      "worklog":  "<worklog name in Jira DB>"
-    }
-  ],
+  "general": {
+    "filter": "<general JQL filter for all teams>"
+  },
   "teams": [
     {
-      "alias": "<alias for show>",
-      "group": "<group name for JQL>",
-      "members": [ "<members username for JQL>", "..." ]
+      "name": "<name for show>",
+      "members": [
+        {
+          "user": "<username for JQL>",
+          "worklog":  "<worklog name in Jira DB>"
+        }
+      ]
     }
   ]
 }
