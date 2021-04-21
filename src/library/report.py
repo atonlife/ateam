@@ -31,7 +31,8 @@ class Report:
             assert fields.get('timeoriginalestimate')
             metrics['summary_estimate_count'] += fields.get('timeoriginalestimate')
 
-            metrics['summary_time_count'] += self.jira.get_issue_worklog(worklog_members, period, issue)
+            issue_worklog = self.jira.get_issue_worklog(worklog_members, period, issue)
+            metrics['summary_time_count'] += issue_worklog
 
         debug('Calculated team metrics')
         return metrics

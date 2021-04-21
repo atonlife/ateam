@@ -25,8 +25,8 @@ class Metric:
             aliases='m',
             option=[
                 dict(
-                    name='start',
-                    help='Start date of the calculation period (inclusive): <YYYY-MM-DD>',
+                    name='begin',
+                    help='Begin date of the calculation period (inclusive): <YYYY-MM-DD>',
                 ),
                 dict(
                     name='end',
@@ -42,17 +42,17 @@ class Metric:
         assert self.metadata
 
         period = dict(
-            start = args.start,
+            begin = args.begin,
             end = args.end,
         )
         report = Report(self.jira, self.metadata.get_general())
 
-        info('Calculate team metrics for a period "{start}" - "{end}"'.format(**period))
+        info('Calculate team metrics for a period "{begin}" - "{end}"'.format(**period))
 
         for team in self.metadata.get_teams():
-            print('Team "{}" metrics:'.format(team.get('name')))
+            print('{}:'.format(team.get('name')))
 
             metrics = report.get_metrics(team, period)
-            for metric in metrics:
+            for metric in sorted(metrics):
                 #TODO: convert seconds to hours from time
                 print('- {}: {:0.3f}'.format(metric, metrics.get(metric) / 3600.0))

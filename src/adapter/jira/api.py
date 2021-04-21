@@ -1,5 +1,6 @@
 
 from logging import debug, info
+from datetime import datetime, timedelta
 
 from .connect import Connect
 from .cfg import JiraCFG
@@ -28,7 +29,7 @@ class JiraAPI:
                 AND
             worklogAuthor in ({authors})
                 AND
-            worklogDate >= {start}
+            worklogDate >= {begin}
                 AND
             worklogDate <= {end}
         '''.format(
@@ -50,11 +51,16 @@ class JiraAPI:
             if worklog.get('author').get('name') not in members:
                 continue
 
-            # Format exemple: 2018-05-16T10:52:00.000+0300
-            started = worklog.get('started')
-            if started < period.get('start') or period.get('end') < started:
+            #* 'started' is true, 'created' is false
+            started = self._get_worklog_date(worklog.get('started'))
+            if started < period.get('begin') or period.get('end') < started:
                 continue
 
             total_worklog += worklog.get('timeSpentSeconds')
 
         return total_worklog
+
+    def _get_worklog_date(self, timestamp: str) -> str:
+        ''' exemple: '2021-01-26T07:20:00.000+0400'
+        '''
+        return timestamp.split('T', maxsplit=1)[0]
