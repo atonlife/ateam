@@ -82,7 +82,8 @@ class Connect:
     def search_issues(self, jql: str) -> list:
         data = dict(
             jql=jql,
-            fields=['timeoriginalestimate'],
+            fields=['timetracking'],
+            maxResults=100,
         )
 
         try:

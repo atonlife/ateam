@@ -1,5 +1,5 @@
 
-from logging import debug, info
+from logging import debug, info, warning
 
 from adapter.jira.api import JiraAPI
 
@@ -27,9 +27,17 @@ class Report:
         issues = self.jira.get_complete_issues(user_members, period)
 
         for issue in issues:
-            fields = issue.get('fields')
-            assert fields.get('timeoriginalestimate')
-            metrics['summary_estimate_count'] += fields.get('timeoriginalestimate')
+            timetracking = issue.get('fields').get('timetracking')
+            assert timetracking
+
+            estimate = timetracking.get('originalEstimateSeconds')
+            if estimate == 0:
+                warning(
+                    'Issue without Original Estimate: "{key}"'.format(
+                        key=issue.get('key')
+                    )
+                )
+            metrics['summary_estimate_count'] += estimate
 
             issue_worklog = self.jira.get_issue_worklog(worklog_members, period, issue)
             metrics['summary_time_count'] += issue_worklog
