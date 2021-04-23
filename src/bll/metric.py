@@ -1,16 +1,9 @@
 
 from argparse import Namespace
-from logging import info
+from logging import info, debug
 
 from config.metadata import CfgMetadata
-
-
-
-class Period:
-
-    def __init__(self, start: str, end: str) -> None:
-        self.start = start
-        self.end = end
+from library.report import Report
 
 
 
@@ -32,8 +25,8 @@ class Metric:
             aliases='m',
             option=[
                 dict(
-                    name='start',
-                    help='Start date of the calculation period (inclusive): <YYYY-MM-DD>',
+                    name='begin',
+                    help='Begin date of the calculation period (inclusive): <YYYY-MM-DD>',
                 ),
                 dict(
                     name='end',
@@ -45,13 +38,27 @@ class Metric:
 
 
     def _calculate(self, args: Namespace) -> None:
-        info('Calculate metrics')
         assert self.jira
         assert self.metadata
 
-        period = Period(args.start, args.end)
+        period = dict(
+            begin = args.begin,
+            end = args.end,
+        )
+        report = Report(self.jira, self.metadata.get_general())
+
+        info('Calculate team metrics for a period "{begin}" - "{end}"'.format(**period))
 
         for team in self.metadata.get_teams():
-            #TODO add report with CLI date period by metadata
-            pass
+            print('{}:'.format(team.get('name')))
 
+            metrics = report.get_metrics(team, period)
+            for metric, value in sorted(metrics.items()):
+                #* fractional value in hours required
+                print('- {metric}: {value:0.3f}'.format(
+                    metric=metric,
+                    value=self.__convert_second_to_hour(value),
+                ))
+
+    def __convert_second_to_hour(self, seconds: int) -> float:
+        return seconds / 3600.0

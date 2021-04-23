@@ -36,10 +36,12 @@ class CfgMetadata:
         cfg = CfgPath(metadata_path)
 
         with open(cfg.get_path()) as metadata_json:
-            metadata = load(metadata_json)
+            self.metadata = load(metadata_json)
 
-        self.teams = MDTeams(metadata.get('teams'))
+
+    def get_general(self) -> dict:
+        return self.metadata.get('general')
 
 
     def get_teams(self) -> MDTeams:
-        return self.teams
+        return MDTeams(self.metadata.get('teams'))

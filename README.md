@@ -7,7 +7,7 @@ Calculate Team Metrics by Jira Statistics
 
 
 ## Dependence
-Only Python 3.7 standart library
+Only Python 3.7+ standart library
 
 
 ## Configuration
@@ -17,26 +17,26 @@ Only Python 3.7 standart library
 [DEFAULT]
 
 [jira]
-server = <Server>
-user = <Username>
-password = <User Password>
+server = <server>
+user = <username>
+password = <user password>
 ```
 
 ### metadata.json
 ```json
 {
-  "members": [
-    {
-      "alias" : <name_for_show>,
-      "user": <username_for_JQL>,
-      "worklog":  <worklog_name_in_Jira_DB>
-    }
-  ],
+  "general": {
+    "filter": "<general JQL filter for all teams>"
+  },
   "teams": [
     {
-      "alias": <alias_for_show>,
-      "group": <group_name_for_JQL>,
-      "members": [ <members.user>, ... ]
+      "name": "<name for show>",
+      "members": [
+        {
+          "user": "<username for JQL>",
+          "worklog":  "<worklog name in Jira DB>"
+        }
+      ]
     }
   ]
 }
