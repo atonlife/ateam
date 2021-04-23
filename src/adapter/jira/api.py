@@ -23,7 +23,6 @@ class JiraAPI:
 
         info('Jira search complete issues for "{}"'.format(authors))
 
-        #TODO include end date in filter (add day, conv_jira())
         jql = '''
             filter = "{filter}"
                 AND

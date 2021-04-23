@@ -53,6 +53,12 @@ class Metric:
             print('{}:'.format(team.get('name')))
 
             metrics = report.get_metrics(team, period)
-            for metric in sorted(metrics):
-                #TODO: convert seconds to hours from time
-                print('- {}: {:0.3f}'.format(metric, metrics.get(metric) / 3600.0))
+            for metric, value in sorted(metrics.items()):
+                #* fractional value in hours required
+                print('- {metric}: {value:0.3f}'.format(
+                    metric=metric,
+                    value=self.__convert_second_to_hour(value),
+                ))
+
+    def __convert_second_to_hour(self, seconds: int) -> float:
+        return seconds / 3600.0
