@@ -2,11 +2,11 @@
 
 from logging import DEBUG, basicConfig, debug, exception, info
 
-from adapter.jira.api import JiraAPI
-from adapter.cli import CLI
-from bll.сomposite import BLComposite
-from config.connect import CfgConnect
-from config.metadata import CfgMetadata
+from external.jira.api import JiraAPI
+from external.cli import CLI
+from business.logic.сomposite import BLComposite
+from external.config.connect import CfgConnect
+from external.config.metadata import CfgMetadata
 
 
 
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         format='%(asctime)s\t[%(levelname)s]\t%(message)s',
     )
 
-    debug('<')
+    debug('BEGIN')
     try:
         ateam = ATeam()
         ateam.run()
@@ -62,4 +62,4 @@ if __name__ == '__main__':
         info('Successful')
         print('OK')
     finally:
-        debug('>')
+        debug('END')

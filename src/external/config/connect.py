@@ -4,7 +4,7 @@ from logging import info
 
 from .path import CfgPath
 
-from adapter.jira.cfg import JiraCFG
+from external.jira.cfg import JiraCFG
 
 
 

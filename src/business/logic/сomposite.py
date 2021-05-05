@@ -1,7 +1,7 @@
 
 from logging import info
 
-from config.metadata import CfgMetadata
+from external.config.metadata import CfgMetadata
 
 from .metric import Metric
 
