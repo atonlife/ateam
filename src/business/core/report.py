@@ -1,7 +1,7 @@
 
 from logging import debug, info, warning
 
-from adapter.jira.api import JiraAPI
+from external.jira.api import JiraAPI
 
 
 

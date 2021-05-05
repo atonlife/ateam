@@ -2,8 +2,8 @@
 from argparse import Namespace
 from logging import info, debug
 
-from config.metadata import CfgMetadata
-from library.report import Report
+from external.config.metadata import CfgMetadata
+from business.core.report import Report
 
 
 
